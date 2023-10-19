@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
-import {  useFonts, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold } from '@expo-google-fonts/montserrat';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -9,6 +9,7 @@ export default function App() {
   
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
+    Montserrat_600SemiBold,
   });
 
   if (!fontsLoaded) {
@@ -16,7 +17,7 @@ export default function App() {
   }
 
   return (
-
+    
     <LinearGradient
         colors={['#FFFFFF', '#1B396A']}
         style={styles.container}
@@ -32,7 +33,21 @@ export default function App() {
 
         <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 14, marginBottom: 430, maxWidth: 200, textAlign: "center" }}>Control de Préstamo de Equipos Multimedia</Text>
 
-        <Ionicons.Button name="person" size={24} color ="white" borderRadius={20} alignItems= "center">Administrador</Ionicons.Button>
+        <TouchableOpacity style={{backgroundColor: '#1B396A', width:200, height: 50, padding: 10, borderRadius: 30, position:"absolute", alignItems:'center'}}> 
+          
+          <Ionicons name="person" size={22} color="white">
+          <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14}}>   Administrador</Text>
+          </Ionicons>
+
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{backgroundColor: '#1B396A', width:200, height: 50, padding: 10, borderRadius: 30, top:-200, alignItems:'center'}}> 
+          
+          <Ionicons name="people" size={24} color="white">
+          <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14}}>   Personal</Text>
+          </Ionicons>
+
+      </TouchableOpacity>
       
       </LinearGradient>
       
