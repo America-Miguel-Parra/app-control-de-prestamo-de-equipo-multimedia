@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
+import LogoComponent from '../../../LogoComponent';
 
-export default function Login_Admi (){
+const Login_Admi = ({ navigation }) =>{
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -23,6 +24,8 @@ export default function Login_Admi (){
         start={{ x: 1, y: 0 }}
         end={{ x: 1, y: 1 }}
     >
+      <LogoComponent/>
+      
     <Text style={{top: 5, marginBottom: 40, color: '#A9A7AA'}}> ────────────────────</Text>    
         
         <View style={styles.login}>
@@ -39,7 +42,9 @@ export default function Login_Admi (){
         style={styles.placeholderacceso}
         />
         
-        <TouchableOpacity style={{backgroundColor: '#1B396A', width:110, height: 50, padding: 5, borderRadius: 30, marginTop: 50, marginLeft: 70}}> 
+        <TouchableOpacity style={{backgroundColor: '#1B396A', width:110, height: 50, padding: 5, borderRadius: 30, marginTop: 50, marginLeft: 70}}
+        onPress={() => navigation.navigate('Menu_Admi')}
+        > 
           <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding:10}}>Continuar</Text>
         </TouchableOpacity>
         </View>
@@ -105,3 +110,5 @@ const styles = StyleSheet.create({
   
   
   });
+
+  export default Login_Admi;

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
+import LogoComponent from '../../../LogoComponent';
 
 export default function Login_Personal (){
     let [fontsLoaded] = useFonts({
@@ -21,6 +22,9 @@ export default function Login_Personal (){
         start={{ x: 1, y: 0 }}
         end={{ x: 1, y: 1 }}
     >
+
+      <LogoComponent/>
+
     <Text style={{top: 5, marginBottom: 40, color: '#A9A7AA'}}> ────────────────────</Text>    
         
         <View style={styles.login}>
