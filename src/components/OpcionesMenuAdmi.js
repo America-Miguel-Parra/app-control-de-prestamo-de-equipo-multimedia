@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
-const OpcionesMenuAdmi = () => {
+const OpcionesMenuAdmi = ({navigation}) => {
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -21,58 +21,54 @@ const OpcionesMenuAdmi = () => {
             
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8,  width:120, height: 100, padding: 20, borderRadius: 20, top: -200, marginRight:180, alignItems:'center'}}
-            
+                onPress={() => navigation.navigate('OpcUsuarios')}
             > 
 
-                <Ionicons name="people" size={30} color="white">
-          
-                </Ionicons>
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', padding: 3}}>Usuarios</Text>
+                <Ionicons name="people" size={33} color="white" />
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:5}}>Usuarios</Text>
             </TouchableOpacity>
 
 
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -330, marginLeft:180, alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 18, borderRadius: 20, top: -300, marginLeft:180, alignItems:'center'}}
             
             > 
 
-                <Ionicons name="desktop" size={30} color="white">
-          
-                </Ionicons>
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', padding: 5}}>Equipos</Text>
+                <Ionicons name="desktop" size={33} color="white" />
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:8}}>Equipos</Text>
             </TouchableOpacity>
 
              
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -280, marginRight:180, alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -250, marginRight:180, alignItems:'center'}}
             
             > 
 
-                <AntDesign name="filetext1" size={30} color="white">
+                <AntDesign name="filetext1" size={33} color="white">
 
                 </AntDesign>
           
-             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', padding: 5}}>Préstamos</Text>
+             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Préstamos</Text>
             </TouchableOpacity>
 
 
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -380, marginLeft:180, alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -350, marginLeft:180, alignItems:'center'}}
             
             > 
 
-             <MaterialCommunityIcons name="qrcode-scan" size={30} color="white" />
-             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', padding: 5}}>Código QR</Text>
+             <MaterialCommunityIcons name="qrcode-scan" size={33} color="white" />
+             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Código QR</Text>
             </TouchableOpacity>
 
 
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -335, marginVertical:'auto', alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -300, marginVertical:'auto', alignItems:'center'}}
             
             > 
 
-                <Ionicons name="stats-chart-sharp" size={30} color="white" />
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', padding: 3}}>Estadísticas</Text>
+                <Ionicons name="stats-chart-sharp" size={33} color="white" />
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Estadísticas</Text>
              </TouchableOpacity>
 
             
