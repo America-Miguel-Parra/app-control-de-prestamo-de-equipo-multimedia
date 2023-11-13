@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
@@ -8,6 +8,20 @@ import TabNavigation from '../../../../navigation/TabNavigation';
 
 
 const Nuevo_Usuario = ({navigation}) =>{
+
+    const [state, setState] = useState({
+        Nombre: '',
+        ApellidoPaterno: '',
+        ApellidoMaterno: '',
+        NumeroMatricula: '',
+        Area: '',
+        Usuario: '',
+        ClaveDeAcceso: ''
+    });
+
+    const handleChangeText = (Nombre, value) => {
+        setState({...state, [Nombre]: value})
+    }
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -40,40 +54,48 @@ const Nuevo_Usuario = ({navigation}) =>{
                 <ScrollView>
                     <TextInput 
                     placeholder='Nombre'
+                    onChangeText={(value) => handleChangeText('Nombre', value)}
                     style={styles.placeholderusuario}
                     />
 
                     <TextInput 
                     placeholder='Apellido Paterno'
+                    onChangeText={(value) => handleChangeText('ApellidoPaterno', value)}
                     style={styles.placeholderApellidoP}
                     />
 
                     <TextInput 
                     placeholder='Apellido Materno'
+                    onChangeText={(value) => handleChangeText('ApellidoMaterno', value)}
                     style={styles.placeholderApellidoM}
                     />
 
                     <TextInput 
                     placeholder='Número de Matrícula'
+                    onChangeText={(value) => handleChangeText('NumeroMatricula', value)}
                     style={styles.placeholderMatricula}
                     />
 
                     <TextInput 
                     placeholder='Área'
+                    onChangeText={(value) => handleChangeText('Area', value)}
                     style={styles.placeholderArea}
                     />
 
                     <TextInput 
                     placeholder='Usuario'
+                    onChangeText={(value) => handleChangeText('Usuario', value)}
                     style={styles.placeholderUsuario}
                     />
 
                     <TextInput 
                     placeholder='Clave de acceso'
+                    onChangeText={(value) => handleChangeText('ClaveDeAcceso', value)}
                     style={styles.placeholderClaveDeAcceso}
                     />
         
-                    <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}> 
+                    <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
+                    onPress={() => console.log(state)}> 
                         <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
                     </TouchableOpacity>
 
