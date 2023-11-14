@@ -18,7 +18,7 @@ const ButtonsHome = ({ navigation }) => {
         <View style={styles.container}>
             
             <TouchableOpacity 
-            style={{backgroundColor: '#1B396A', width:200, height: 50, padding: 10, borderRadius: 30, top:-300, alignItems:'center'}}
+            style={{backgroundColor: '#1B396A', width:200, height: 50, padding: 10, borderRadius: 30, top:-290, alignItems:'center'}}
             onPress={() => navigation.navigate('Login_Admi')}
             > 
 
@@ -29,7 +29,7 @@ const ButtonsHome = ({ navigation }) => {
              </TouchableOpacity>
 
              <TouchableOpacity 
-             style={{backgroundColor: '#1B396A', width:200, height: 50, padding: 10, borderRadius: 30, top:-230, alignItems:'center'}}
+             style={{backgroundColor: '#1B396A', width:200, height: 50, padding: 10, borderRadius: 30, top:-220, alignItems:'center'}}
              onPress={() => navigation.navigate('Login_Personal')}
              > 
           

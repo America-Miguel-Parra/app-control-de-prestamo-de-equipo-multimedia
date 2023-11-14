@@ -5,23 +5,20 @@ import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Re
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import TabNavigation from '../../../../navigation/TabNavigation';
 
 
-
-const Nuevo_Usuario = ({navigation}) =>{
+const Nuevo_Equipo = ({navigation}) =>{
 
     const [state, setState] = useState({
-        Nombre: '',
-        ApellidoPaterno: '',
-        ApellidoMaterno: '',
-        NumeroMatricula: '',
-        Area: '',
-        Usuario: '',
-        ClaveDeAcceso: ''
+        NumeroEquipo: '',
+        Marca: '',
+        Modelo: '',
+        NumeroSerie: ''
     });
 
-    const handleChangeText = (Nombre, value) => {
-        setState({...state, [Nombre]: value})
+    const handleChangeText = (NumeroEquipo, value) => {
+        setState({...state, [NumeroEquipo]: value})
     }
 
     let [fontsLoaded] = useFonts({
@@ -50,50 +47,33 @@ const Nuevo_Usuario = ({navigation}) =>{
         
             <View style={styles.login}>
                     <View style={styles.headerlogin}>
-                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Usuario</Text>
+                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Equipo</Text>
                     </View>
                 <ScrollView>
                     <TextInput 
-                    placeholder='Nombre'
-                    onChangeText={(value) => handleChangeText('Nombre', value)}
+                    placeholder='Número de Equipo'
+                    onChangeText={(value) => handleChangeText('NumeroEquipo', value)}
                     style={styles.placeholderusuario}
                     />
 
                     <TextInput 
-                    placeholder='Apellido Paterno'
-                    onChangeText={(value) => handleChangeText('ApellidoPaterno', value)}
+                    placeholder='Marca'
+                    onChangeText={(value) => handleChangeText('Marca', value)}
                     style={styles.placeholderApellidoP}
                     />
 
                     <TextInput 
-                    placeholder='Apellido Materno'
-                    onChangeText={(value) => handleChangeText('ApellidoMaterno', value)}
+                    placeholder='Modelo'
+                    onChangeText={(value) => handleChangeText('Modelo', value)}
                     style={styles.placeholderApellidoM}
                     />
 
                     <TextInput 
-                    placeholder='Número de Matrícula'
-                    onChangeText={(value) => handleChangeText('NumeroMatricula', value)}
+                    placeholder='Número de Serie'
+                    onChangeText={(value) => handleChangeText('NumeroSerie', value)}
                     style={styles.placeholderMatricula}
                     />
 
-                    <TextInput 
-                    placeholder='Área'
-                    onChangeText={(value) => handleChangeText('Area', value)}
-                    style={styles.placeholderArea}
-                    />
-
-                    <TextInput 
-                    placeholder='Usuario'
-                    onChangeText={(value) => handleChangeText('Usuario', value)}
-                    style={styles.placeholderUsuario}
-                    />
-
-                    <TextInput 
-                    placeholder='Clave de acceso'
-                    onChangeText={(value) => handleChangeText('ClaveDeAcceso', value)}
-                    style={styles.placeholderClaveDeAcceso}
-                    />
         
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
                     onPress={() => console.log(state)}> 
@@ -114,7 +94,7 @@ const Nuevo_Usuario = ({navigation}) =>{
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, left:-100}}>Home</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('OpcUsuarios')}>
+          <Pressable onPress={() => navigation.navigate('OpcEquipos')}>
             <Ionicons name="arrow-back-circle" size={29} color="white" right={-16} top={-44} />
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>
@@ -250,4 +230,4 @@ const styles = StyleSheet.create({
   
   });
 
-  export default Nuevo_Usuario;
+  export default Nuevo_Equipo;

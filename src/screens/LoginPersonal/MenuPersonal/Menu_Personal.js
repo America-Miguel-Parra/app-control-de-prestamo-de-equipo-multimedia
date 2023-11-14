@@ -5,11 +5,11 @@ import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Re
 import { Ionicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import LogosInstitucion from '../../../../../LogosInstitucion';
+import LogosInstitucion from '../../../../LogosInstitucion';
 
 
 
-const OpcUsuarios = ({navigation}) => {
+const Menu_Personal = ({navigation}) => {
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -29,7 +29,7 @@ const OpcUsuarios = ({navigation}) => {
         end={{ x: 1, y: 1 }}
     >
 
-    <LogosInstitucion/>  
+    <LogosInstitucion/> 
       
     <Text style={{top: 10, marginBottom: 47, color: '#A9A7AA'}}> ────────────────────</Text> 
 
@@ -37,11 +37,11 @@ const OpcUsuarios = ({navigation}) => {
     
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 20, borderRadius: 20, top: -270, marginVertical:'auto', alignItems:'center'}}
-                onPress={() => navigation.navigate('Nuevo_Usuario')}
+                onPress={() => navigation.navigate('Nuevo_Prestamo')}
             > 
 
                 <AntDesign name="addfile" size={33} color="white" />    
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Nuevo Usario</Text>
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Nuevo Préstamo</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -50,7 +50,7 @@ const OpcUsuarios = ({navigation}) => {
             > 
 
                 <MaterialCommunityIcons name="file-search-outline" size={35} color="white" />    
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:7}}>Lista de Usario</Text>
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:7}}>Mis Préstamos</Text>
             </TouchableOpacity>            
 
     
@@ -62,7 +62,7 @@ const OpcUsuarios = ({navigation}) => {
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, left:-100}}>Home</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('Menu_Admi')}>
+          <Pressable onPress={() => navigation.navigate('Menu_Personal')}>
             <Ionicons name="arrow-back-circle" size={29} color="white" right={-16} top={-44} />
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   
   
   });
-export default OpcUsuarios;
+export default Menu_Personal;

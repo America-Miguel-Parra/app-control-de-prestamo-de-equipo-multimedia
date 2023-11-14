@@ -4,25 +4,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import LogosInstitucion from '../../../../../LogosInstitucion';
+import LogosInstitucion from '../../../../LogosInstitucion';
 
 
-
-const Nuevo_Usuario = ({navigation}) =>{
+const Nuevo_Prestamo = ({navigation}) =>{
 
     const [state, setState] = useState({
-        Nombre: '',
-        ApellidoPaterno: '',
-        ApellidoMaterno: '',
-        NumeroMatricula: '',
+        NombreCompleto: '',
         Area: '',
-        Usuario: '',
+        NoProyector: '',
+        Carrera: '',
+        Grupo: '',
+        Materia: '',
         ClaveDeAcceso: ''
     });
 
-    const handleChangeText = (Nombre, value) => {
-        setState({...state, [Nombre]: value})
+    const handleChangeText = (NombreCompleto, value) => {
+        setState({...state, [NombreCompleto]: value})
     }
+
+
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -50,49 +51,43 @@ const Nuevo_Usuario = ({navigation}) =>{
         
             <View style={styles.login}>
                     <View style={styles.headerlogin}>
-                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Usuario</Text>
+                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Préstamo</Text>
                     </View>
                 <ScrollView>
                     <TextInput 
-                    placeholder='Nombre'
-                    onChangeText={(value) => handleChangeText('Nombre', value)}
+                    placeholder='Nombre Completo'
+                    onChangeText={(value) => handleChangeText('NombreCompleto', value)}
                     style={styles.placeholderusuario}
-                    />
-
-                    <TextInput 
-                    placeholder='Apellido Paterno'
-                    onChangeText={(value) => handleChangeText('ApellidoPaterno', value)}
-                    style={styles.placeholderApellidoP}
-                    />
-
-                    <TextInput 
-                    placeholder='Apellido Materno'
-                    onChangeText={(value) => handleChangeText('ApellidoMaterno', value)}
-                    style={styles.placeholderApellidoM}
-                    />
-
-                    <TextInput 
-                    placeholder='Número de Matrícula'
-                    onChangeText={(value) => handleChangeText('NumeroMatricula', value)}
-                    style={styles.placeholderMatricula}
                     />
 
                     <TextInput 
                     placeholder='Área'
                     onChangeText={(value) => handleChangeText('Area', value)}
+                    style={styles.placeholderApellidoP}
+                    />
+
+                    <TextInput 
+                    placeholder='No. de Proyector'
+                    onChangeText={(value) => handleChangeText('NoProyector', value)}
+                    style={styles.placeholderApellidoM}
+                    />
+
+                    <TextInput 
+                    placeholder='Carrera'
+                    onChangeText={(value) => handleChangeText('Carrera', value)}
+                    style={styles.placeholderMatricula}
+                    />
+
+                    <TextInput 
+                    placeholder='Grupo'
+                    onChangeText={(value) => handleChangeText('Grupo', value)}
                     style={styles.placeholderArea}
                     />
 
                     <TextInput 
-                    placeholder='Usuario'
-                    onChangeText={(value) => handleChangeText('Usuario', value)}
+                    placeholder='Materia'
+                    onChangeText={(value) => handleChangeText('Materia', value)}
                     style={styles.placeholderUsuario}
-                    />
-
-                    <TextInput 
-                    placeholder='Clave de acceso'
-                    onChangeText={(value) => handleChangeText('ClaveDeAcceso', value)}
-                    style={styles.placeholderClaveDeAcceso}
                     />
         
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
@@ -250,4 +245,4 @@ const styles = StyleSheet.create({
   
   });
 
-  export default Nuevo_Usuario;
+  export default Nuevo_Prestamo;

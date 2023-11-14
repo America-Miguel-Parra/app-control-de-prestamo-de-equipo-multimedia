@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosLogin from '../../../LogosLogin';
 
-export default function Login_Personal (){
+const Login_Personal = ({ navigation }) =>{
+
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
         Montserrat_600SemiBold,
@@ -25,7 +27,7 @@ export default function Login_Personal (){
 
       <LogosLogin/>
 
-    <Text style={{top: -45, marginBottom: 40, color: '#A9A7AA'}}> ────────────────────</Text>    
+    <Text style={{top: -12, marginBottom: 40, color: '#A9A7AA'}}> ────────────────────</Text>    
         
         <View style={styles.login}>
         <View style={styles.headerlogin}>
@@ -41,10 +43,24 @@ export default function Login_Personal (){
         style={styles.placeholderacceso}
         />
         
-        <TouchableOpacity style={{backgroundColor: '#1B396A', width:110, height: 50, padding: 5, borderRadius: 30, marginTop: 50, marginLeft: 70}}> 
+        <TouchableOpacity style={{backgroundColor: '#1B396A', width:110, height: 50, padding: 5, borderRadius: 30, marginTop: 50, marginLeft: 70}}
+        onPress={() => navigation.navigate('Menu_Personal')}
+        > 
           <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding:10}}>Continuar</Text>
         </TouchableOpacity>
         </View>
+
+
+        <View
+        style={{backgroundColor: '#D9D9D9', opacity: 0.4, width:330, height: 50, padding: 10, borderRadius: 30, top: 80, alignItems:'center'}}>
+
+          <Pressable onPress={() => navigation.navigate('Index_Home')}>
+            <Ionicons name="arrow-back-circle" size={30} color="white" right={-16} top={-8} />
+            <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -12}}>Regresar</Text>
+          </Pressable>
+
+        </View>
+
 
     </LinearGradient>
     );
@@ -64,7 +80,7 @@ const styles = StyleSheet.create({
         height: 350,
         backgroundColor: 'white',
         borderRadius: 18,
-        top: -45,
+        top: -10,
     },
 
     headerlogin: {
@@ -108,3 +124,6 @@ const styles = StyleSheet.create({
   
   
   });
+
+
+export default Login_Personal;  

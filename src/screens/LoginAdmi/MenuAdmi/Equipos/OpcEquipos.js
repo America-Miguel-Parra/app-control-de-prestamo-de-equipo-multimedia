@@ -5,11 +5,12 @@ import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Re
 import { Ionicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons'; 
 import LogosInstitucion from '../../../../../LogosInstitucion';
 
 
 
-const OpcUsuarios = ({navigation}) => {
+const OpcEquipos = ({navigation}) => {
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -36,21 +37,21 @@ const OpcUsuarios = ({navigation}) => {
     <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -14, marginBottom: 360, maxWidth: 200, textAlign: "center" }}>Seleccione una opción</Text>   
     
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 20, borderRadius: 20, top: -270, marginVertical:'auto', alignItems:'center'}}
-                onPress={() => navigation.navigate('Nuevo_Usuario')}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 17, borderRadius: 20, top: -270, marginVertical:'auto', alignItems:'center'}}
+                onPress={() => navigation.navigate('Nuevo_Equipo')}
             > 
 
-                <AntDesign name="addfile" size={33} color="white" />    
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Nuevo Usario</Text>
+                <MaterialIcons name="add-to-queue" size={38} color="white" />    
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:7}}>Nuevo Equipo</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 17, borderRadius: 20, top: -190, marginVertical:'auto', alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 11, borderRadius: 20, top: -190, marginVertical:'auto', alignItems:'center'}}
             
             > 
 
-                <MaterialCommunityIcons name="file-search-outline" size={35} color="white" />    
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:7}}>Lista de Usario</Text>
+                <MaterialCommunityIcons name="file-search-outline" size={35} color="white" top={7} />    
+                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:15}}>Lista de Equipos</Text>
             </TouchableOpacity>            
 
     
@@ -97,4 +98,4 @@ const styles = StyleSheet.create({
   
   
   });
-export default OpcUsuarios;
+export default OpcEquipos;

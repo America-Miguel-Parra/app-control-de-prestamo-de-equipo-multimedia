@@ -29,9 +29,9 @@ const Menu_Admi = ({navigation}) => {
 
     <LogosInstitucion/>  
       
-    <Text style={{top: 10, marginBottom: 40, color: '#A9A7AA'}}> ────────────────────</Text> 
+    <Text style={{top: 15, marginBottom: 40, color: '#A9A7AA'}}> ────────────────────</Text> 
 
-    <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -10, marginBottom: 430, maxWidth: 200, textAlign: "center" }}>Seleccione una opción</Text>   
+    <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -2, marginBottom: 465, maxWidth: 200, textAlign: "center" }}>Seleccione una opción</Text>   
         
     <OpcionesMenuAdmi navigation={navigation}/>
 

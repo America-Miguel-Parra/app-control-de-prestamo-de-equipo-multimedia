@@ -31,7 +31,7 @@ const OpcionesMenuAdmi = ({navigation}) => {
 
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 18, borderRadius: 20, top: -300, marginLeft:180, alignItems:'center'}}
-            
+                onPress={() => navigation.navigate('OpcEquipos')}
             > 
 
                 <Ionicons name="desktop" size={33} color="white" />

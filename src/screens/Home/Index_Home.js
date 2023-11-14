@@ -31,9 +31,9 @@ const Index_Home = ({ navigation }) =>{
 
         <LogoComponent/>
 
-        <Text style={{top: 40, marginBottom: 10, color: '#A9A7AA'}}> ────────────────────</Text>
+        <Text style={{top: 110, marginBottom: 10, color: '#A9A7AA'}}> ────────────────────</Text>
         
-        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 14, top: 50, marginBottom: 430, maxWidth: 200, textAlign: "center" }}>Control de Préstamo de Equipos Multimedia</Text>
+        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 14, top: 123, marginBottom: 430, maxWidth: 200, textAlign: "center" }}>Control de Préstamo de Equipos Multimedia</Text>
 
         <ButtonsHome navigation={navigation} />
 
