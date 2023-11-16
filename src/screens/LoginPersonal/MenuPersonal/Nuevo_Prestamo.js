@@ -6,6 +6,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../LogosInstitucion';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
 
 const Nuevo_Prestamo = ({navigation}) =>{
 
@@ -23,6 +26,25 @@ const Nuevo_Prestamo = ({navigation}) =>{
         setState({...state, [NombreCompleto]: value})
     }
 
+
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedTime, setSelectedTime] = useState(new Date());
+
+
+    const handleOpenDateTimePicker = () => {
+        DateTimePicker.show({
+          value: selectedDate,
+          mode: 'datetime',
+          is24Hour: false,
+        }, (newSelectedDate, newSelectedTime) => {
+          if (newSelectedDate && newSelectedTime) {
+            setSelectedDate(newSelectedDate);
+            setSelectedTime(newSelectedTime);
+          }
+        });
+    };
+    
 
 
     let [fontsLoaded] = useFonts({
@@ -89,6 +111,20 @@ const Nuevo_Prestamo = ({navigation}) =>{
                     onChangeText={(value) => handleChangeText('Materia', value)}
                     style={styles.placeholderUsuario}
                     />
+
+                    <TouchableOpacity
+                    style={{
+                        width: 200,
+                        height: 40,
+                        marginTop: 60,
+                        marginLeft: 27,
+                        backgroundColor: '#EDEDED',
+                        borderRadius: 10,}}
+                        
+                        onPress={handleOpenDateTimePicker}
+                    />
+
+    
         
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
                     onPress={() => console.log(state)}> 
@@ -109,7 +145,7 @@ const Nuevo_Prestamo = ({navigation}) =>{
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, left:-100}}>Home</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('OpcUsuarios')}>
+          <Pressable onPress={() => navigation.navigate('Menu_Personal')}>
             <Ionicons name="arrow-back-circle" size={29} color="white" right={-16} top={-44} />
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>

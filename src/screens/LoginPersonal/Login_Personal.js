@@ -1,11 +1,47 @@
-import React from 'react';
+import React, { useState} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosLogin from '../../../LogosLogin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login_Personal = ({ navigation }) =>{
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const validateCredentials = (username, password) => {
+    // Hardcoded valid credentials
+    const validUsername = 'personal';
+    const validPassword = '12345';
+  
+    // Check against valid credentials
+    const isUsernameValid = username === validUsername;
+    const isPasswordValid = password === validPassword;
+  
+    // Return true if both username and password are valid
+    return isUsernameValid && isPasswordValid;
+  };
+
+  const handleContinue = () => {
+    const isCredentialsValid = validateCredentials(username, password);
+
+  if (isCredentialsValid) {
+    // Save credentials
+    AsyncStorage.setItem('username', username);
+    AsyncStorage.setItem('password', password);
+
+    // Redirect to home screen
+    navigation.navigate('Menu_Personal');
+  } else {
+    // Display error message
+    alert('Credenciales incorrectas');
+  }
+};
+
+
+
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -35,16 +71,20 @@ const Login_Personal = ({ navigation }) =>{
         </View>
         <TextInput 
         placeholder='Usuario'
+        value={username}
+        onChangeText={setUsername}
         style={styles.placeholderusuario}
         />
 
         <TextInput 
         placeholder='Clave de acceso'
+        value={password}
+        onChangeText={setPassword}
         style={styles.placeholderacceso}
         />
         
         <TouchableOpacity style={{backgroundColor: '#1B396A', width:110, height: 50, padding: 5, borderRadius: 30, marginTop: 50, marginLeft: 70}}
-        onPress={() => navigation.navigate('Menu_Personal')}
+        onPress={handleContinue}
         > 
           <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding:10}}>Continuar</Text>
         </TouchableOpacity>
