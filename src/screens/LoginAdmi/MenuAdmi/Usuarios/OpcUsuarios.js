@@ -46,7 +46,7 @@ const OpcUsuarios = ({navigation}) => {
 
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 17, borderRadius: 20, top: -190, marginVertical:'auto', alignItems:'center'}}
-            
+                onPress={() => navigation.navigate('Lista_Usuarios')}
             > 
 
                 <MaterialCommunityIcons name="file-search-outline" size={35} color="white" />    

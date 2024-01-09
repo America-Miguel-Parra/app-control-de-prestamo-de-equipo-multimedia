@@ -8,33 +8,39 @@ import LogosInstitucion from '../../../../../LogosInstitucion';
 
 
 
-const Nuevo_Usuario = ({navigation}) =>{
+const Lista_Prestamos = ({navigation}) =>{
 
-    const [state, setState] = useState({
-        
-        Nombre: '',
-        ApellidoPaterno: '',
-        ApellidoMaterno: '',
-        NumeroMatricula: '',
-        Area: '',
-        Usuario: '',
-        ClaveDeAcceso: ''
+  const fetchPrestamos = async () => {
+    const response = await fetch('https://656abb2fdac3630cf7274098.mockapi.io/api/v1/prestamos', {
+      method: 'GET',
+      headers: {'content-type': 'application/json'},
     });
-
-    const handleChangeText = (Nombre, value) => {
-        setState({...state, [Nombre]: value})
+  
+    if (!response.ok) {
+      throw new Error('Error fetching prestamos');
     }
+  
+    const prestamos = await response.json();
+    return prestamos;
+  };
 
-    const handleSaveButtonClick = async () => {
-        const savedState = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/users', {
-            method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify(state)
-        })
-        // console.log(savedState)
+  const [prestamos, setPrestamos] = useState([]);
 
-        alert('Registro guardado con éxito');
-    }
+useEffect(() => {
+  const fetchPrestamosData = async () => {
+    const prestamosData = await fetchPrestamos();
+    setPrestamos(prestamosData);
+  };
+
+  fetchPrestamosData();
+}, []);
+
+if (!prestamos) {
+  return <div>Loading...</div>;
+}
+
+
+
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -58,60 +64,28 @@ const Nuevo_Usuario = ({navigation}) =>{
       
         <Text style={{top: 10, marginBottom: 47, color: '#A9A7AA'}}> ────────────────────</Text>    
         
-        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -15, marginBottom: 160, maxWidth: 200, textAlign: "center" }}>Registro</Text>
+        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -15, marginBottom: 160, maxWidth: 200, textAlign: "center" }}>Préstamos del Día</Text>
         
             <View style={styles.login}>
                     <View style={styles.headerlogin}>
-                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Usuario</Text>
+                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Viernes</Text>
                     </View>
                 <ScrollView>
-                    <TextInput 
-                    placeholder='Nombre'
-                    onChangeText={(value) => handleChangeText('Nombre', value)}
-                    style={styles.placeholderusuario}
-                    />
 
-                    <TextInput 
-                    placeholder='Apellido Paterno'
-                    onChangeText={(value) => handleChangeText('ApellidoPaterno', value)}
-                    style={styles.placeholderApellidoP}
-                    />
-
-                    <TextInput 
-                    placeholder='Apellido Materno'
-                    onChangeText={(value) => handleChangeText('ApellidoMaterno', value)}
-                    style={styles.placeholderApellidoM}
-                    />
-
-                    <TextInput 
-                    placeholder='Número de Matrícula'
-                    onChangeText={(value) => handleChangeText('NumeroMatricula', value)}
-                    style={styles.placeholderMatricula}
-                    />
-
-                    <TextInput 
-                    placeholder='Área'
-                    onChangeText={(value) => handleChangeText('Area', value)}
-                    style={styles.placeholderArea}
-                    />
-
-                    <TextInput 
-                    placeholder='Usuario'
-                    onChangeText={(value) => handleChangeText('Usuario', value)}
-                    style={styles.placeholderUsuario}
-                    />
-
-                    <TextInput 
-                    placeholder='Clave de acceso'
-                    onChangeText={(value) => handleChangeText('ClaveDeAcceso', value)}
-                    style={styles.placeholderClaveDeAcceso}
-                    />
-        
-                    <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={handleSaveButtonClick}> 
-                        <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
-                    </TouchableOpacity>
-
+                        {prestamos.map((prestamos) => (
+                          <View key={prestamos.id} style={{ borderBottomWidth: 1.5, borderColor: '#dcdcdc', marginTop: 10, marginLeft: 15, marginRight: 15  }}>
+                            <Text>Nombre Completo: {prestamos.NombreCompleto}</Text>
+                            <Text>Área: {prestamos.Area}</Text>
+                            <Text>Número de Equipo: {prestamos.NumeroEquipo}</Text>
+                            <Text>Tipo de Equipo: {prestamos.TipoEquipo}</Text>
+                            <Text>Carrera: {prestamos.Carrera}</Text>
+                            <Text>Grupo: {prestamos.Grupo}</Text>
+                            <Text>Materia: {prestamos.Materia}</Text>
+                            <Text>Fecha: {prestamos.Fecha}</Text>
+                            <Text>Hora: {prestamos.Hora}</Text>
+                          </View>
+                        ))}
+                
                     <View style={{ height: 30 }} />
 
                 </ScrollView>
@@ -126,7 +100,7 @@ const Nuevo_Usuario = ({navigation}) =>{
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, left:-100}}>Home</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('OpcUsuarios')}>
+          <Pressable onPress={() => navigation.navigate('Menu_Admi')}>
             <Ionicons name="arrow-back-circle" size={29} color="white" right={-16} top={-44} />
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>
@@ -169,84 +143,60 @@ const styles = StyleSheet.create({
         
     },
 
-    placeholderusuario: {
+    placeholderUsuario1: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 35,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
 
-    placeholderApellidoP: {
+    placeholderUsuario2: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
+        marginTop: 60,
+        marginLeft: 27,
+        backgroundColor: '#EDEDED',
+        borderRadius: 10,
+    },
+
+    placeholderUsuario3: {
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+        fontSize: 14,
+        width: 200,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
     
-    placeholderApellidoM: {
+    placeholderUsuario4: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
 
-    placeholderMatricula: {
+    placeholderUsuario5: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
-        marginTop: 60,
-        marginLeft: 27,
-        backgroundColor: '#EDEDED',
-        borderRadius: 10,
-    },
-
-    placeholderArea: {
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'center',
-        fontSize: 14,
-        width: 200,
-        height: 40,
-        marginTop: 60,
-        marginLeft: 27,
-        backgroundColor: '#EDEDED',
-        borderRadius: 10,
-    },
-
-    placeholderUsuario: {
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'center',
-        fontSize: 14,
-        width: 200,
-        height: 40,
-        marginTop: 60,
-        marginLeft: 27,
-        backgroundColor: '#EDEDED',
-        borderRadius: 10,
-    },
-
-    placeholderClaveDeAcceso: {
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'center',
-        fontSize: 14,
-        width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
@@ -262,4 +212,4 @@ const styles = StyleSheet.create({
   
   });
 
-  export default Nuevo_Usuario;
+  export default Lista_Prestamos;

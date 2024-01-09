@@ -36,22 +36,13 @@ const Menu_Personal = ({navigation}) => {
     <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -14, marginBottom: 360, maxWidth: 200, textAlign: "center" }}>Seleccione una opción</Text>   
     
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 10, borderRadius: 20, top: -270, marginVertical:'auto', alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 10, borderRadius: 20, top: -180, marginVertical:'auto', alignItems:'center', marginBottom: 118}}
                 onPress={() => navigation.navigate('Nuevo_Prestamo')}
             > 
 
                 <AntDesign name="addfile" size={33} color="white" top={8}/>    
                 <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:18}}>Nuevo Préstamo</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 17, borderRadius: 20, top: -190, marginVertical:'auto', alignItems:'center'}}
-            
-            > 
-
-                <MaterialCommunityIcons name="file-search-outline" size={35} color="white" />    
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:7}}>Mis Préstamos</Text>
-            </TouchableOpacity>            
+            </TouchableOpacity>        
 
     
       <View

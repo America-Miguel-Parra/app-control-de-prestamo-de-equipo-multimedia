@@ -11,6 +11,10 @@ import OpcEquipos from "../screens/LoginAdmi/MenuAdmi/Equipos/OpcEquipos";
 import Nuevo_Equipo from "../screens/LoginAdmi/MenuAdmi/Equipos/Nuevo_Equipo";
 import Menu_Personal from "../screens/LoginPersonal/MenuPersonal/Menu_Personal";
 import Nuevo_Prestamo from "../screens/LoginPersonal/MenuPersonal/Nuevo_Prestamo";
+import Lista_Equipos from "../screens/LoginAdmi/MenuAdmi/Equipos/Lista_Equipos";
+import Lista_Usuarios from "../screens/LoginAdmi/MenuAdmi/Usuarios/Lista_Usuarios";
+import Lista_Prestamos from "../screens/LoginAdmi/MenuAdmi/Prestamos/Lista_Prestamos";
+import CodigoQR_Equipos from "../screens/LoginAdmi/MenuAdmi/Scanner/CodigoQR_Equipos";
 
 const Stack = createStackNavigator();
 
@@ -48,12 +52,32 @@ const NavigationStack = () => {
                 headerShown: false
             }}
             />
+            <Stack.Screen name="Lista_Usuarios" component={Lista_Usuarios} 
+            options={{
+                headerShown: false
+            }}
+            />
             <Stack.Screen name="OpcEquipos" component={OpcEquipos} 
             options={{
                 headerShown: false
             }}
             />
             <Stack.Screen name="Nuevo_Equipo" component={Nuevo_Equipo} 
+            options={{
+                headerShown: false
+            }}
+            />
+            <Stack.Screen name="Lista_Equipos" component={Lista_Equipos} 
+            options={{
+                headerShown: false
+            }}
+            />
+            <Stack.Screen name="Lista_Prestamos" component={Lista_Prestamos} 
+            options={{
+                headerShown: false
+            }}
+            />
+            <Stack.Screen name="CodigoQR_Equipos" component={CodigoQR_Equipos} 
             options={{
                 headerShown: false
             }}

@@ -1,39 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import QRCode from 'react-native-qrcode-svg';
 
 
 
-const Nuevo_Equipo = ({navigation}) =>{
-
-  const [state, setState] = useState({
-        
-    TipoEquipo: '',
-    Marca: '',
-    Modelo: '',
-    NumeroSerie: ''
-});
-
-const handleChangeText = (TipoEquipo, value) => {
-    setState({...state, [TipoEquipo]: value})
-}
-
-const handleSaveButtonClick = async () => {
-    const savedState = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/equipos', {
-        method: 'POST',
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify(state)
-    })
-    // console.log(savedState)
-
-    alert('Registro guardado con éxito');
-}
-
-
+const CodigoQR_Equipos = ({navigation}) =>{
 
 
     let [fontsLoaded] = useFonts({
@@ -56,50 +32,15 @@ const handleSaveButtonClick = async () => {
     >
       <LogosInstitucion/>
       
-        <Text style={{top: 10, marginBottom: 47, color: '#A9A7AA'}}> ────────────────────</Text>    
+        <Text style={{top: 10, marginBottom: 230, color: '#A9A7AA'}}> ────────────────────</Text>
+
+        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -189, marginBottom: 75, maxWidth: 200, textAlign: "center" }}>Equipos multimedia en existencia</Text>      
         
-        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -15, marginBottom: 160, maxWidth: 200, textAlign: "center" }}>Registro</Text>
-        
-            <View style={styles.login}>
-                    <View style={styles.headerlogin}>
-                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Equipo</Text>
-                    </View>
-                <ScrollView>
-
-                    <TextInput 
-                    placeholder='Tipo de equipo'
-                    onChangeText={(value) => handleChangeText('TipoEquipo', value)}
-                    style={styles.placeholderEquipo}
-                    />
-
-                    <TextInput 
-                    placeholder='Marca'
-                    onChangeText={(value) => handleChangeText('Marca', value)}
-                    style={styles.placeholderMarca}
-                    />
-
-                    <TextInput 
-                    placeholder='Modelo'
-                    onChangeText={(value) => handleChangeText('Modelo', value)}
-                    style={styles.placeholderModelo}
-                    />
-
-                    <TextInput 
-                    placeholder='Número de Serie'
-                    onChangeText={(value) => handleChangeText('NumeroSerie', value)}
-                    style={styles.placeholderNumSerie}
-                    />
-
-        
-                    <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={handleSaveButtonClick}> 
-                        <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
-                    </TouchableOpacity>
-
-                    <View style={{ height: 30 }} />
-
-                </ScrollView>
-            </View>
+          <View style={{top: -150, marginBottom: 100}}>
+            <QRCode value='https://6567fd979927836bd973f99a.mockapi.io/api/v1/equipos' 
+            size={200}
+            />
+          </View>
 
 
         <View
@@ -110,7 +51,7 @@ const handleSaveButtonClick = async () => {
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, left:-100}}>Home</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('OpcEquipos')}>
+          <Pressable onPress={() => navigation.navigate('Menu_Admi')}>
             <Ionicons name="arrow-back-circle" size={29} color="white" right={-16} top={-44} />
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>
@@ -141,7 +82,7 @@ const styles = StyleSheet.create({
         height: 400,
         backgroundColor: 'white',
         borderRadius: 18,
-        top: -110,
+        top: -150,
     },
 
     headerlogin: {
@@ -153,12 +94,24 @@ const styles = StyleSheet.create({
         
     },
 
+    placeholderNumEquipo: {
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+        fontSize: 14,
+        width: 200,
+        height: 130,
+        marginTop: 35,
+        marginLeft: 27,
+        backgroundColor: '#EDEDED',
+        borderRadius: 10,
+    },
+
     placeholderEquipo: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
@@ -170,7 +123,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
@@ -182,7 +135,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
@@ -194,7 +147,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
@@ -210,4 +163,4 @@ const styles = StyleSheet.create({
   
   });
 
-  export default Nuevo_Equipo;
+  export default CodigoQR_Equipos;

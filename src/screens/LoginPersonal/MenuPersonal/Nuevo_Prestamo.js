@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, DatePicker, TimePicker } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../LogosInstitucion';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
@@ -15,11 +14,13 @@ const Nuevo_Prestamo = ({navigation}) =>{
     const [state, setState] = useState({
         NombreCompleto: '',
         Area: '',
-        NoProyector: '',
+        NumeroEquipo: '',
+        TipoEquipo: '',
         Carrera: '',
         Grupo: '',
         Materia: '',
-        ClaveDeAcceso: ''
+        Fecha: '',
+        Hora:''
     });
 
     const handleChangeText = (NombreCompleto, value) => {
@@ -27,23 +28,17 @@ const Nuevo_Prestamo = ({navigation}) =>{
     }
 
 
+    const handleSaveButtonClick = async () => {
+      const savedState = await fetch('https://656abb2fdac3630cf7274098.mockapi.io/api/v1/prestamos', {
+          method: 'POST',
+          headers: {'content-type': 'application/json'},
+          body: JSON.stringify(state)
+      })
+      // console.log(savedState)
 
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedTime, setSelectedTime] = useState(new Date());
+      alert('Registro guardado con éxito');
+  }
 
-
-    const handleOpenDateTimePicker = () => {
-        DateTimePicker.show({
-          value: selectedDate,
-          mode: 'datetime',
-          is24Hour: false,
-        }, (newSelectedDate, newSelectedTime) => {
-          if (newSelectedDate && newSelectedTime) {
-            setSelectedDate(newSelectedDate);
-            setSelectedTime(newSelectedTime);
-          }
-        });
-    };
     
 
 
@@ -79,55 +74,59 @@ const Nuevo_Prestamo = ({navigation}) =>{
                     <TextInput 
                     placeholder='Nombre Completo'
                     onChangeText={(value) => handleChangeText('NombreCompleto', value)}
-                    style={styles.placeholderusuario}
+                    style={styles.placeholderNombreComp}
                     />
 
                     <TextInput 
                     placeholder='Área'
                     onChangeText={(value) => handleChangeText('Area', value)}
-                    style={styles.placeholderApellidoP}
+                    style={styles.placeholderArea}
                     />
 
                     <TextInput 
-                    placeholder='No. de Proyector'
-                    onChangeText={(value) => handleChangeText('NoProyector', value)}
-                    style={styles.placeholderApellidoM}
+                    placeholder='Número de Equipo'
+                    onChangeText={(value) => handleChangeText('NumeroEquipo', value)}
+                    style={styles.placeholderNumeroEquipo}
+                    />
+
+                    <TextInput 
+                    placeholder='Tipo de Equipo'
+                    onChangeText={(value) => handleChangeText('TipoEquipo', value)}
+                    style={styles.placeholderTipoEquipo}
                     />
 
                     <TextInput 
                     placeholder='Carrera'
                     onChangeText={(value) => handleChangeText('Carrera', value)}
-                    style={styles.placeholderMatricula}
+                    style={styles.placeholderCarrera}
                     />
 
                     <TextInput 
                     placeholder='Grupo'
                     onChangeText={(value) => handleChangeText('Grupo', value)}
-                    style={styles.placeholderArea}
+                    style={styles.placeholderGrupo}
                     />
 
                     <TextInput 
                     placeholder='Materia'
                     onChangeText={(value) => handleChangeText('Materia', value)}
-                    style={styles.placeholderUsuario}
+                    style={styles.placeholderMateria}
                     />
 
-                    <TouchableOpacity
-                    style={{
-                        width: 200,
-                        height: 40,
-                        marginTop: 60,
-                        marginLeft: 27,
-                        backgroundColor: '#EDEDED',
-                        borderRadius: 10,}}
-                        
-                        onPress={handleOpenDateTimePicker}
+                    <TextInput 
+                    placeholder='Fecha: Día/Mes/Año'
+                    onChangeText={(value) => handleChangeText('Fecha', value)}
+                    style={styles.placeholderFecha}
                     />
 
-    
-        
+                    <TextInput 
+                    placeholder='Hora: Inicio-Fin'
+                    onChangeText={(value) => handleChangeText('Hora', value)}
+                    style={styles.placeholderHora}
+                    />
+
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={() => console.log(state)}> 
+                    onPress={handleSaveButtonClick}> 
                         <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
                     </TouchableOpacity>
 
@@ -188,49 +187,13 @@ const styles = StyleSheet.create({
         
     },
 
-    placeholderusuario: {
+    placeholderNombreComp: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
         height: 40,
         marginTop: 35,
-        marginLeft: 27,
-        backgroundColor: '#EDEDED',
-        borderRadius: 10,
-    },
-
-    placeholderApellidoP: {
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'center',
-        fontSize: 14,
-        width: 200,
-        height: 40,
-        marginTop: 60,
-        marginLeft: 27,
-        backgroundColor: '#EDEDED',
-        borderRadius: 10,
-    },
-    
-    placeholderApellidoM: {
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'center',
-        fontSize: 14,
-        width: 200,
-        height: 40,
-        marginTop: 60,
-        marginLeft: 27,
-        backgroundColor: '#EDEDED',
-        borderRadius: 10,
-    },
-
-    placeholderMatricula: {
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'center',
-        fontSize: 14,
-        width: 200,
-        height: 40,
-        marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
@@ -247,8 +210,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
-
-    placeholderUsuario: {
+    
+    placeholderNumeroEquipo: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
@@ -260,7 +223,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
-    placeholderClaveDeAcceso: {
+    placeholderTipoEquipo: {
+      fontFamily: 'Montserrat_400Regular',
+      textAlign: 'center',
+      fontSize: 14,
+      width: 200,
+      height: 40,
+      marginTop: 60,
+      marginLeft: 27,
+      backgroundColor: '#EDEDED',
+      borderRadius: 10,
+  },
+
+    placeholderCarrera: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
@@ -271,6 +246,54 @@ const styles = StyleSheet.create({
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
+
+    placeholderGrupo: {
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+        fontSize: 14,
+        width: 200,
+        height: 40,
+        marginTop: 60,
+        marginLeft: 27,
+        backgroundColor: '#EDEDED',
+        borderRadius: 10,
+    },
+
+    placeholderMateria: {
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+        fontSize: 14,
+        width: 200,
+        height: 40,
+        marginTop: 60,
+        marginLeft: 27,
+        backgroundColor: '#EDEDED',
+        borderRadius: 10,
+    },
+
+    placeholderFecha: {
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+        fontSize: 14,
+        width: 200,
+        height: 40,
+        marginTop: 60,
+        marginLeft: 27,
+        backgroundColor: '#EDEDED',
+        borderRadius: 10,
+    },
+
+    placeholderHora: {
+      fontFamily: 'Montserrat_400Regular',
+      textAlign: 'center',
+      fontSize: 14,
+      width: 200,
+      height: 40,
+      marginTop: 60,
+      marginLeft: 27,
+      backgroundColor: '#EDEDED',
+      borderRadius: 10,
+  },
 
     responsiveBox: {
       width: '80%',

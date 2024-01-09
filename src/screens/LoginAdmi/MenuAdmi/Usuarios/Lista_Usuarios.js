@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
@@ -7,33 +7,36 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
 
 
+const Lista_Usuarios = ({navigation}) =>{
 
-const Nuevo_Equipo = ({navigation}) =>{
+  const fetchUsers = async () => {
+    const response = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/users', {
+      method: 'GET',
+      headers: {'content-type': 'application/json'},
+    });
+  
+    if (!response.ok) {
+      throw new Error('Error fetching users');
+    }
+  
+    const users = await response.json();
+    return users;
+  };
 
-  const [state, setState] = useState({
-        
-    TipoEquipo: '',
-    Marca: '',
-    Modelo: '',
-    NumeroSerie: ''
-});
+  const [users, setUsers] = useState([]);
 
-const handleChangeText = (TipoEquipo, value) => {
-    setState({...state, [TipoEquipo]: value})
+useEffect(() => {
+  const fetchUsersData = async () => {
+    const usersData = await fetchUsers();
+    setUsers(usersData);
+  };
+
+  fetchUsersData();
+}, []);
+
+if (!users) {
+  return <div>Loading...</div>;
 }
-
-const handleSaveButtonClick = async () => {
-    const savedState = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/equipos', {
-        method: 'POST',
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify(state)
-    })
-    // console.log(savedState)
-
-    alert('Registro guardado con éxito');
-}
-
-
 
 
     let [fontsLoaded] = useFonts({
@@ -56,45 +59,26 @@ const handleSaveButtonClick = async () => {
     >
       <LogosInstitucion/>
       
-        <Text style={{top: 10, marginBottom: 47, color: '#A9A7AA'}}> ────────────────────</Text>    
+        <Text style={{top: 10, marginBottom: 230, color: '#A9A7AA'}}> ────────────────────</Text>    
         
-        <Text style={{ color: '#1B396A', fontFamily: 'Montserrat_700Bold', fontSize: 15, top: -15, marginBottom: 160, maxWidth: 200, textAlign: "center" }}>Registro</Text>
         
             <View style={styles.login}>
                     <View style={styles.headerlogin}>
-                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Nuevo Equipo</Text>
+                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Lista de Usuarios</Text>
                     </View>
                 <ScrollView>
-
-                    <TextInput 
-                    placeholder='Tipo de equipo'
-                    onChangeText={(value) => handleChangeText('TipoEquipo', value)}
-                    style={styles.placeholderEquipo}
-                    />
-
-                    <TextInput 
-                    placeholder='Marca'
-                    onChangeText={(value) => handleChangeText('Marca', value)}
-                    style={styles.placeholderMarca}
-                    />
-
-                    <TextInput 
-                    placeholder='Modelo'
-                    onChangeText={(value) => handleChangeText('Modelo', value)}
-                    style={styles.placeholderModelo}
-                    />
-
-                    <TextInput 
-                    placeholder='Número de Serie'
-                    onChangeText={(value) => handleChangeText('NumeroSerie', value)}
-                    style={styles.placeholderNumSerie}
-                    />
-
-        
-                    <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={handleSaveButtonClick}> 
-                        <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
-                    </TouchableOpacity>
+                  
+                  {users.map((user) => (
+                    <View key={user.id} style={{ borderBottomWidth: 1.5, borderColor: '#dcdcdc', marginTop: 10, marginLeft: 15, marginRight: 15  }}>
+                      <Text>Nombre: {user.Nombre}</Text>
+                      <Text>Apellido Paterno: {user.ApellidoPaterno}</Text>
+                      <Text>Apellido Materno: {user.ApellidoMaterno}</Text>
+                      <Text>Número de Matricula: {user.NumeroMatricula}</Text>
+                      <Text>Área: {user.Area}</Text>
+                      <Text>Usuario: {user.Usuario}</Text>
+                      <Text>Clave De Acceso: {user.ClaveDeAcceso}</Text>
+                    </View>
+                  ))}
 
                     <View style={{ height: 30 }} />
 
@@ -110,7 +94,7 @@ const handleSaveButtonClick = async () => {
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, left:-100}}>Home</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('OpcEquipos')}>
+          <Pressable onPress={() => navigation.navigate('OpcUsuarios')}>
             <Ionicons name="arrow-back-circle" size={29} color="white" right={-16} top={-44} />
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>
@@ -141,7 +125,7 @@ const styles = StyleSheet.create({
         height: 400,
         backgroundColor: 'white',
         borderRadius: 18,
-        top: -110,
+        top: -150,
     },
 
     headerlogin: {
@@ -153,48 +137,60 @@ const styles = StyleSheet.create({
         
     },
 
-    placeholderEquipo: {
+    placeholderUsuario1: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
+        marginTop: 35,
+        marginLeft: 27,
+        backgroundColor: '#EDEDED',
+        borderRadius: 10,
+    },
+
+    placeholderUsuario2: {
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+        fontSize: 14,
+        width: 200,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
 
-    placeholderMarca: {
+    placeholderUsuario3: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
     
-    placeholderModelo: {
+    placeholderUsuario4: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
         borderRadius: 10,
     },
 
-    placeholderNumSerie: {
+    placeholderUsuario5: {
         fontFamily: 'Montserrat_400Regular',
         textAlign: 'center',
         fontSize: 14,
         width: 200,
-        height: 40,
+        height: 130,
         marginTop: 60,
         marginLeft: 27,
         backgroundColor: '#EDEDED',
@@ -210,4 +206,4 @@ const styles = StyleSheet.create({
   
   });
 
-  export default Nuevo_Equipo;
+  export default Lista_Usuarios;

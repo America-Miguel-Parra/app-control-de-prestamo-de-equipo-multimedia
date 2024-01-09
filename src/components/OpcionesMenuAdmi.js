@@ -41,7 +41,7 @@ const OpcionesMenuAdmi = ({navigation}) => {
              
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -250, marginRight:180, alignItems:'center'}}
-            
+                onPress={() => navigation.navigate('Lista_Prestamos')}
             > 
 
                 <AntDesign name="filetext1" size={33} color="white">
@@ -54,7 +54,7 @@ const OpcionesMenuAdmi = ({navigation}) => {
 
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -350, marginLeft:180, alignItems:'center'}}
-            
+                onPress={() => navigation.navigate('CodigoQR_Equipos')}
             > 
 
              <MaterialCommunityIcons name="qrcode-scan" size={33} color="white" />

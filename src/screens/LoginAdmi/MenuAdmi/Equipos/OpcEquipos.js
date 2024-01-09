@@ -47,7 +47,7 @@ const OpcEquipos = ({navigation}) => {
 
             <TouchableOpacity 
                 style={{backgroundColor: '#1B396A', opacity: 0.8, width:125, height: 100, padding: 11, borderRadius: 20, top: -190, marginVertical:'auto', alignItems:'center'}}
-            
+                onPress={() => navigation.navigate('Lista_Equipos')}
             > 
 
                 <MaterialCommunityIcons name="file-search-outline" size={35} color="white" top={7} />    
