@@ -1,39 +1,42 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('app_db.db');
 
 
 
 const Lista_Prestamos = ({navigation}) =>{
 
-  const fetchPrestamos = async () => {
-    const response = await fetch('https://656abb2fdac3630cf7274098.mockapi.io/api/v1/prestamos', {
-      method: 'GET',
-      headers: {'content-type': 'application/json'},
-    });
-  
-    if (!response.ok) {
-      throw new Error('Error fetching prestamos');
-    }
-  
-    const prestamos = await response.json();
-    return prestamos;
-  };
-
   const [prestamos, setPrestamos] = useState([]);
+  const [fechaPrestamoEliminar, setFechaPrestamoEliminar] = useState(''); // Estado para almacenar el número de serie a eliminar
 
-useEffect(() => {
-  const fetchPrestamosData = async () => {
-    const prestamosData = await fetchPrestamos();
-    setPrestamos(prestamosData);
-  };
 
-  fetchPrestamosData();
-}, []);
+  useEffect(() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM NuevoPrestamo',
+        [],
+        (tx, res) => {
+          const prestamos = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            prestamos.push(res.rows._array[i]);
+          }
+          setPrestamos(prestamos);
+        },
+        (error) => {
+          console.error('Error al cargar prestamos:', error);
+        }
+      );
+    });
+  }, []);
+
+  
 
 if (!prestamos) {
   return <div>Loading...</div>;
@@ -52,6 +55,58 @@ if (!prestamos) {
         return null;
       }
 
+
+      /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      const handleDeleteBySerialNumber = () => {
+        const fechaEliminar = fechaPrestamoEliminar.trim(); // Trim leading/trailing spaces
+      
+        if (!fechaEliminar) {
+          Alert.alert('Error', 'Ingrese la fecha de los prestamo a eliminar.');
+          return;
+        }
+      
+        const prestamo = prestamos.find(prestamos => prestamos.Fecha === fechaEliminar);
+      
+        if (!prestamo) {
+          Alert.alert('Error', 'No se encontraron ningunos préstamo con esa fecha.');
+          return;
+        }
+      
+        Alert.alert(
+          'Confirmación',
+          `¿Está seguro de eliminar los préstamos con la fecha de "${fechaEliminar}"?`,
+          [
+            { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
+            {
+              text: 'Eliminar',
+              onPress: () => {
+                db.transaction(tx => {
+                  tx.executeSql(
+                    'DELETE FROM NuevoPrestamo WHERE Fecha = ?',
+                    [fechaEliminar],
+                    (tx, res) => {
+                      console.log('Préstamos eliminados:', fechaEliminar);
+                      // Actualiza la lista de equipos
+                      setPrestamos(prestamos.filter(prestamos => prestamos.Fecha !== fechaEliminar));
+                      setFechaPrestamoEliminar(''); // Limpia el campo de texto después de la eliminación exitosa
+                    },
+                    (error) => {
+                      console.error('Error al eliminar los préstamos:', error);
+                    }
+                  );
+                });
+              },
+              style: 'destructive',
+            },
+          ]
+        );
+      };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
     return(
 
     <LinearGradient
@@ -68,7 +123,7 @@ if (!prestamos) {
         
             <View style={styles.login}>
                     <View style={styles.headerlogin}>
-                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Viernes</Text>
+                        <Text style={{ color: '#FFFFFF', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding: 12, textAlign: "center" }}>Historial de Préstamos</Text>
                     </View>
                 <ScrollView>
 
@@ -87,6 +142,20 @@ if (!prestamos) {
                         ))}
                 
                     <View style={{ height: 30 }} />
+
+
+                    <TextInput
+                      style={{ borderWidth: 1, borderColor: '#dcdcdc', textAlign:'center', padding: 10, width: 200, marginLeft: 25 }}
+                      placeholder="Fecha de los préstamos a eliminar"
+                      onChangeText={setFechaPrestamoEliminar}
+                    />
+
+                      <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 25, marginLeft: 70}}
+                      onPress={handleDeleteBySerialNumber}
+                      >
+                        <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign:'center', top:10}}>Eliminar</Text>
+                      </TouchableOpacity>
+                      
 
                 </ScrollView>
             </View>

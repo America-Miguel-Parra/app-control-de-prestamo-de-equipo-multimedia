@@ -5,39 +5,67 @@ import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Re
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../LogosInstitucion';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('app_db.db');
+
+db.transaction(tx => {
+  tx.executeSql(
+    `CREATE TABLE IF NOT EXISTS NuevoPrestamo (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      NombreCompleto TEXT NOT NULL,
+      Area TEXT NOT NULL,
+      NumeroEquipo TEXT NOT NULL,
+      TipoEquipo TEXT NOT NULL,
+      Carrera TEXT NOT NULL,
+      Grupo TEXT NOT NULL,
+      Materia TEXT NOT NULL,
+      Fecha TEXT NOT NULL,
+      Hora TEXT NOT NULL
+    )`,
+    [],
+    (tx, res) => {
+      console.log('Tabla de Nuevo Prestamo creada');
+    },
+    (transaction, error) => {
+      console.error('Error al crear la tabla de Nuevo Prestamo:', error);
+    }
+  );
+});
 
 
 
 
 const Nuevo_Prestamo = ({navigation}) =>{
 
-    const [state, setState] = useState({
-        NombreCompleto: '',
-        Area: '',
-        NumeroEquipo: '',
-        TipoEquipo: '',
-        Carrera: '',
-        Grupo: '',
-        Materia: '',
-        Fecha: '',
-        Hora:''
+  const [nombrecompleto, setNombreCompleto] = useState('');
+  const [area, setArea] = useState('');
+  const [numeroequipo, setNumeroEquipo] = useState('');
+  const [tipoequipo, setTipoEquipo] = useState('');
+  const [carrera, setCarrera] = useState('');
+  const [grupo, setGrupo] = useState('');
+  const [materia, setMateria] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [hora, setHora] = useState('');
+
+  const handleGuardar = async () => {
+    // Validación de datos (opcional)
+
+    db.transaction(tx => {
+      tx.executeSql(
+        `INSERT INTO NuevoPrestamo (nombrecompleto, area, numeroequipo, tipoequipo, carrera, grupo, materia, fecha, hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [nombrecompleto, area, numeroequipo, tipoequipo, carrera, grupo, materia, fecha, hora],
+        (tx, res) => {
+          alert('Datos guardados correctamente');
+          // Mostrar mensaje de éxito
+        },
+        (transaction, error) => {
+          alert('Error al guardar datos:', error);
+          // Mostrar mensaje de error
+        }
+      );
     });
-
-    const handleChangeText = (NombreCompleto, value) => {
-        setState({...state, [NombreCompleto]: value})
-    }
-
-
-    const handleSaveButtonClick = async () => {
-      const savedState = await fetch('https://656abb2fdac3630cf7274098.mockapi.io/api/v1/prestamos', {
-          method: 'POST',
-          headers: {'content-type': 'application/json'},
-          body: JSON.stringify(state)
-      })
-      // console.log(savedState)
-
-      alert('Registro guardado con éxito');
-  }
+  };
 
     
 
@@ -73,60 +101,69 @@ const Nuevo_Prestamo = ({navigation}) =>{
                 <ScrollView>
                     <TextInput 
                     placeholder='Nombre Completo'
-                    onChangeText={(value) => handleChangeText('NombreCompleto', value)}
+                    onChangeText={setNombreCompleto}
+                    value={nombrecompleto}
                     style={styles.placeholderNombreComp}
                     />
 
                     <TextInput 
                     placeholder='Área'
-                    onChangeText={(value) => handleChangeText('Area', value)}
+                    onChangeText={setArea}
+                    value={area}
                     style={styles.placeholderArea}
                     />
 
                     <TextInput 
                     placeholder='Número de Equipo'
-                    onChangeText={(value) => handleChangeText('NumeroEquipo', value)}
+                    onChangeText={setNumeroEquipo}
+                    value={numeroequipo}
                     style={styles.placeholderNumeroEquipo}
                     />
 
                     <TextInput 
                     placeholder='Tipo de Equipo'
-                    onChangeText={(value) => handleChangeText('TipoEquipo', value)}
+                    onChangeText={setTipoEquipo}
+                    value={tipoequipo}
                     style={styles.placeholderTipoEquipo}
                     />
 
                     <TextInput 
                     placeholder='Carrera'
-                    onChangeText={(value) => handleChangeText('Carrera', value)}
+                    onChangeText={setCarrera}
+                    value={carrera}
                     style={styles.placeholderCarrera}
                     />
 
                     <TextInput 
                     placeholder='Grupo'
-                    onChangeText={(value) => handleChangeText('Grupo', value)}
+                    onChangeText={setGrupo}
+                    value={grupo}
                     style={styles.placeholderGrupo}
                     />
 
                     <TextInput 
                     placeholder='Materia'
-                    onChangeText={(value) => handleChangeText('Materia', value)}
+                    onChangeText={setMateria}
+                    value={materia}
                     style={styles.placeholderMateria}
                     />
 
                     <TextInput 
                     placeholder='Fecha: Día/Mes/Año'
-                    onChangeText={(value) => handleChangeText('Fecha', value)}
+                    onChangeText={setFecha}
+                    value={fecha}
                     style={styles.placeholderFecha}
                     />
 
                     <TextInput 
                     placeholder='Hora: Inicio-Fin'
-                    onChangeText={(value) => handleChangeText('Hora', value)}
+                    onChangeText={setHora}
+                    value={hora}
                     style={styles.placeholderHora}
                     />
 
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={handleSaveButtonClick}> 
+                    onPress={handleGuardar}> 
                         <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
                     </TouchableOpacity>
 
@@ -149,7 +186,7 @@ const Nuevo_Prestamo = ({navigation}) =>{
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, alignContent: 'flex-end', top: -48}}>Regresar</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('Login_Admi')}>
+          <Pressable onPress={() => navigation.navigate('Login_Personal')}>
             <Ionicons name="log-out" size={25} color="white" right={-108} top={-90} >
             </Ionicons>
             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 13, right:-102, top: -92}}>Salir</Text>

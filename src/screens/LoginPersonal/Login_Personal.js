@@ -4,40 +4,82 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosLogin from '../../../LogosLogin';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('app_db.db');
+
+
 
 const Login_Personal = ({ navigation }) =>{
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [usuario, setUsuario] = useState('');
+const [clavedeacceso, setClaveDeAcceso] = useState('');
 
-  const validateCredentials = (username, password) => {
-    // Hardcoded valid credentials
-    const validUsername = 'personal';
-    const validPassword = '12345';
-  
-    // Check against valid credentials
-    const isUsernameValid = username === validUsername;
-    const isPasswordValid = password === validPassword;
-  
-    // Return true if both username and password are valid
-    return isUsernameValid && isPasswordValid;
-  };
-
-  const handleContinue = () => {
-    const isCredentialsValid = validateCredentials(username, password);
-
-  if (isCredentialsValid) {
-    // Save credentials
-    AsyncStorage.setItem('username', username);
-    AsyncStorage.setItem('password', password);
-
-    // Redirect to home screen
-    navigation.navigate('Menu_Personal');
-  } else {
-    // Display error message
-    alert('Credenciales incorrectas');
+const handleLogin = async () => {
+  // Validar nombre de usuario y contraseña
+  if (!usuario || !clavedeacceso) {
+    alert('Por favor ingrese sus credenciales');
+    return;
   }
+
+  // Consultar la base de datos por el usuario
+  // try {
+
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM formulario WHERE usuario = ?',
+        [usuario],
+        (tx, res) => {
+          console.log("RESULTADO:", res);
+          if(res.rows.length === 0){
+            alert('Credenciales incorrectas');
+            return;
+          }
+
+          const usuarioEncontrado = res.rows._array[0];
+
+          if (usuarioEncontrado.ClaveDeAcceso !== clavedeacceso) {
+            alert('Credenciales incorrectas');
+            return;
+          }
+
+          navigation.navigate('Menu_Personal');
+        },
+        (error) => {
+          console.error('Error al iniciar sesión:', error);
+          alert('Ocurrió un error, por favor vuelva a intentarlo.');
+        }
+      );
+    });
+
+
+  //   const results = db.transaction(tx => tx.executeSql(
+  //     `SELECT * FROM formulario WHERE Usuario = ?`,
+  //     [usuario]
+  //   ));
+
+  //   console.log('RESULTADOS: ', results)
+
+  //   // Si no se encuentra el usuario
+  //   if (results.rows.length === 0) {
+  //     alert('Credenciales incorrectas');
+  //     return;
+  //   }
+
+  //   const usuarioEncontrado = results.rows._array[0];
+
+  //   // Comparar la contraseña (considerar usar un algoritmo de hash seguro)
+  //   if (usuarioEncontrado.ClaveDeAcceso !== clavedeacceso) {
+  //     alert('Credenciales incorrectas');
+  //     return;
+  //   }
+
+  //   // Inicio de sesión exitoso, navegar a la pantalla correspondiente
+  //   navigation.navigate('Menu_Personal');
+  // } catch (error) {
+  //   console.error('Error al iniciar sesión:', error);
+  //   alert('Ocurrió un error, por favor vuelva a intentarlo.');
+  // }
 };
 
 
@@ -71,20 +113,20 @@ const Login_Personal = ({ navigation }) =>{
         </View>
         <TextInput 
         placeholder='Usuario'
-        value={username}
-        onChangeText={setUsername}
+        value={usuario}
+        onChangeText={setUsuario}
         style={styles.placeholderusuario}
         />
 
         <TextInput 
         placeholder='Clave de acceso'
-        value={password}
-        onChangeText={setPassword}
+        value={clavedeacceso}
+        onChangeText={setClaveDeAcceso}
         style={styles.placeholderacceso}
         />
         
         <TouchableOpacity style={{backgroundColor: '#1B396A', width:110, height: 50, padding: 5, borderRadius: 30, marginTop: 50, marginLeft: 70}}
-        onPress={handleContinue}
+        onPress={handleLogin}
         > 
           <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, padding:10}}>Continuar</Text>
         </TouchableOpacity>

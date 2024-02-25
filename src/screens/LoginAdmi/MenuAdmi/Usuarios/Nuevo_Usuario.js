@@ -5,36 +5,61 @@ import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Re
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import * as SQLite from 'expo-sqlite';
 
+const db = SQLite.openDatabase('app_db.db');
+
+db.transaction(tx => {
+  tx.executeSql(
+    `CREATE TABLE IF NOT EXISTS formulario (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Nombre TEXT NOT NULL,
+      ApellidoPaterno TEXT NOT NULL,
+      ApellidoMaterno TEXT NOT NULL,
+      NumeroMatricula TEXT NOT NULL,
+      Area TEXT NOT NULL,
+      Usuario TEXT NOT NULL,
+      ClaveDeAcceso TEXT NOT NULL
+    )`,
+    [],
+    (tx, res) => {
+      console.log('Tabla de formulario creada');
+    },
+    (transaction, error) => {
+      console.error('Error al crear la tabla de formulario:', error);
+    }
+  );
+});
 
 
 const Nuevo_Usuario = ({navigation}) =>{
 
-    const [state, setState] = useState({
-        
-        Nombre: '',
-        ApellidoPaterno: '',
-        ApellidoMaterno: '',
-        NumeroMatricula: '',
-        Area: '',
-        Usuario: '',
-        ClaveDeAcceso: ''
+  const [nombre, setNombre] = useState('');
+  const [apellidopaterno, setApellidoPaterno] = useState('');
+  const [apellidomaterno, setApellidoMaterno] = useState('');
+  const [numeromatricula, setNumeroMatricula] = useState('');
+  const [area, setArea] = useState('');
+  const [usuario, setUsuario] = useState('');
+  const [clavedeacceso, setClaveDeAcceso] = useState('');
+
+  const handleGuardar = async () => {
+    // Validación de datos (opcional)
+
+    db.transaction(tx => {
+      tx.executeSql(
+        `INSERT INTO formulario (nombre, apellidopaterno, apellidomaterno, numeromatricula, area, usuario, clavedeacceso) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [nombre, apellidopaterno, apellidomaterno, numeromatricula, area, usuario, clavedeacceso],
+        (tx, res) => {
+          alert('Datos guardados correctamente');
+          // Mostrar mensaje de éxito
+        },
+        (transaction, error) => {
+          alert('Error al guardar datos:', error);
+          // Mostrar mensaje de error
+        }
+      );
     });
-
-    const handleChangeText = (Nombre, value) => {
-        setState({...state, [Nombre]: value})
-    }
-
-    const handleSaveButtonClick = async () => {
-        const savedState = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/users', {
-            method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify(state)
-        })
-        // console.log(savedState)
-
-        alert('Registro guardado con éxito');
-    }
+  };
 
     let [fontsLoaded] = useFonts({
         Montserrat_700Bold,
@@ -67,48 +92,55 @@ const Nuevo_Usuario = ({navigation}) =>{
                 <ScrollView>
                     <TextInput 
                     placeholder='Nombre'
-                    onChangeText={(value) => handleChangeText('Nombre', value)}
+                    onChangeText={setNombre}
+                    value={nombre}
                     style={styles.placeholderusuario}
                     />
 
                     <TextInput 
                     placeholder='Apellido Paterno'
-                    onChangeText={(value) => handleChangeText('ApellidoPaterno', value)}
+                    onChangeText={setApellidoPaterno}
+                    value={apellidopaterno}
                     style={styles.placeholderApellidoP}
                     />
 
                     <TextInput 
                     placeholder='Apellido Materno'
-                    onChangeText={(value) => handleChangeText('ApellidoMaterno', value)}
+                    onChangeText={setApellidoMaterno}
+                    value={apellidomaterno}
                     style={styles.placeholderApellidoM}
                     />
 
                     <TextInput 
                     placeholder='Número de Matrícula'
-                    onChangeText={(value) => handleChangeText('NumeroMatricula', value)}
+                    onChangeText={setNumeroMatricula}
+                    value={numeromatricula}
                     style={styles.placeholderMatricula}
                     />
 
                     <TextInput 
                     placeholder='Área'
-                    onChangeText={(value) => handleChangeText('Area', value)}
+                    onChangeText={setArea}
+                    value={area}
                     style={styles.placeholderArea}
                     />
 
                     <TextInput 
                     placeholder='Usuario'
-                    onChangeText={(value) => handleChangeText('Usuario', value)}
+                    onChangeText={setUsuario}
+                    value={usuario}
                     style={styles.placeholderUsuario}
                     />
 
                     <TextInput 
                     placeholder='Clave de acceso'
-                    onChangeText={(value) => handleChangeText('ClaveDeAcceso', value)}
+                    onChangeText={setClaveDeAcceso}
+                    value={clavedeacceso}
                     style={styles.placeholderClaveDeAcceso}
                     />
         
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={handleSaveButtonClick}> 
+                    onPress={handleGuardar}> 
                         <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
                     </TouchableOpacity>
 

@@ -5,33 +5,55 @@ import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Re
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import * as SQLite from 'expo-sqlite';
 
+const db = SQLite.openDatabase('app_db.db');
+
+db.transaction(tx => {
+  tx.executeSql(
+    `CREATE TABLE IF NOT EXISTS Equipos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      TipoEquipo TEXT NOT NULL,
+      Marca TEXT NOT NULL,
+      Modelo TEXT NOT NULL,
+      NumeroSerie TEXT NOT NULL
+    )`,
+    [],
+    (tx, res) => {
+      console.log('Tabla de equipos creada');
+    },
+    (transaction, error) => {
+      console.error('Error al crear la tabla de equipos:', error);
+    }
+  );
+});
 
 
 const Nuevo_Equipo = ({navigation}) =>{
 
-  const [state, setState] = useState({
-        
-    TipoEquipo: '',
-    Marca: '',
-    Modelo: '',
-    NumeroSerie: ''
-});
+  const [tipoequipo, setTipoEquipo] = useState('');
+  const [marca, setMarca] = useState('');
+  const [modelo, setModelo] = useState('');
+  const [numeroserie, setNumeroSerie] = useState('');
 
-const handleChangeText = (TipoEquipo, value) => {
-    setState({...state, [TipoEquipo]: value})
-}
+  const handleGuardar = async () => {
+    // Validación de datos (opcional)
 
-const handleSaveButtonClick = async () => {
-    const savedState = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/equipos', {
-        method: 'POST',
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify(state)
-    })
-    // console.log(savedState)
-
-    alert('Registro guardado con éxito');
-}
+    db.transaction(tx => {
+      tx.executeSql(
+        `INSERT INTO equipos (tipoequipo, marca, modelo, numeroserie) VALUES (?, ?, ?, ?)`,
+        [tipoequipo, marca, modelo, numeroserie],
+        (tx, res) => {
+          alert('Datos guardados correctamente');
+          // Mostrar mensaje de éxito
+        },
+        (transaction, error) => {
+          alert('Error al guardar datos:', error);
+          // Mostrar mensaje de error
+        }
+      );
+    });
+  };
 
 
 
@@ -68,31 +90,35 @@ const handleSaveButtonClick = async () => {
 
                     <TextInput 
                     placeholder='Tipo de equipo'
-                    onChangeText={(value) => handleChangeText('TipoEquipo', value)}
+                    onChangeText={setTipoEquipo}
+                    value={tipoequipo}
                     style={styles.placeholderEquipo}
                     />
 
                     <TextInput 
                     placeholder='Marca'
-                    onChangeText={(value) => handleChangeText('Marca', value)}
+                    onChangeText={setMarca}
+                    value={marca}
                     style={styles.placeholderMarca}
                     />
 
                     <TextInput 
                     placeholder='Modelo'
-                    onChangeText={(value) => handleChangeText('Modelo', value)}
+                    onChangeText={setModelo}
+                    value={modelo}
                     style={styles.placeholderModelo}
                     />
 
                     <TextInput 
                     placeholder='Número de Serie'
-                    onChangeText={(value) => handleChangeText('NumeroSerie', value)}
+                    onChangeText={setNumeroSerie}
+                    value={numeroserie}
                     style={styles.placeholderNumSerie}
                     />
 
         
                     <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 65, marginLeft: 70}}
-                    onPress={handleSaveButtonClick}> 
+                    onPress={handleGuardar}> 
                         <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 14, textAlign:'center', top:10}}>Guardar</Text>
                     </TouchableOpacity>
 

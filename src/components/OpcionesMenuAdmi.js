@@ -20,7 +20,7 @@ const OpcionesMenuAdmi = ({navigation}) => {
         <View style={styles.container}>
             
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8,  width:120, height: 100, padding: 20, borderRadius: 20, top: -200, marginRight:180, alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8,  width:120, height: 100, padding: 20, borderRadius: 20, top: -300, marginRight:180, alignItems:'center'}}
                 onPress={() => navigation.navigate('OpcUsuarios')}
             > 
 
@@ -30,7 +30,7 @@ const OpcionesMenuAdmi = ({navigation}) => {
 
 
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 18, borderRadius: 20, top: -300, marginLeft:180, alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 18, borderRadius: 20, top: -400, marginLeft:180, alignItems:'center'}}
                 onPress={() => navigation.navigate('OpcEquipos')}
             > 
 
@@ -40,7 +40,7 @@ const OpcionesMenuAdmi = ({navigation}) => {
 
              
             <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -250, marginRight:180, alignItems:'center'}}
+                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -300, marginVertical:'auto', alignItems:'center'}}
                 onPress={() => navigation.navigate('Lista_Prestamos')}
             > 
 
@@ -52,24 +52,9 @@ const OpcionesMenuAdmi = ({navigation}) => {
             </TouchableOpacity>
 
 
-            <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -350, marginLeft:180, alignItems:'center'}}
-                onPress={() => navigation.navigate('CodigoQR_Equipos')}
-            > 
-
-             <MaterialCommunityIcons name="qrcode-scan" size={33} color="white" />
-             <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Código QR</Text>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity 
-                style={{backgroundColor: '#1B396A', opacity: 0.8, width:120, height: 100, padding: 20, borderRadius: 20, top: -300, marginVertical:'auto', alignItems:'center'}}
             
-            > 
 
-                <Ionicons name="stats-chart-sharp" size={33} color="white" />
-                <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign: 'center', top:10}}>Estadísticas</Text>
-             </TouchableOpacity>
+            
 
             
         </View>

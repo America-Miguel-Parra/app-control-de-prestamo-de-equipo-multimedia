@@ -1,38 +1,38 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('app_db.db');
 
 
 const Lista_Equipos = ({navigation}) =>{
 
-  const fetchEquipos = async () => {
-    const response = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/equipos', {
-      method: 'GET',
-      headers: {'content-type': 'application/json'},
-    });
-  
-    if (!response.ok) {
-      throw new Error('Error fetching equipos');
-    }
-  
-    const equipos = await response.json();
-    return equipos;
-  };
-
   const [equipos, setEquipos] = useState([]);
+  const [numeroSerieEliminar, setNumeroSerieEliminar] = useState(''); // Estado para almacenar el número de serie a eliminar
 
-useEffect(() => {
-  const fetchEquiposData = async () => {
-    const equiposData = await fetchEquipos();
-    setEquipos(equiposData);
-  };
-
-  fetchEquiposData();
-}, []);
+  useEffect(() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Equipos',
+        [],
+        (tx, res) => {
+          const equipos = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            equipos.push(res.rows._array[i]);
+          }
+          setEquipos(equipos);
+        },
+        (error) => {
+          console.error('Error al cargar los equipos:', error);
+        }
+      );
+    });
+  }, []);
 
 if (!equipos) {
   return <div>Loading...</div>;
@@ -50,6 +50,55 @@ if (!equipos) {
       if (!fontsLoaded) {
         return null;
       }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      const handleDeleteBySerialNumber = () => {
+        const numeroSerie = numeroSerieEliminar.trim(); // Trim leading/trailing spaces
+      
+        if (!numeroSerie) {
+          Alert.alert('Error', 'Ingrese el número de serie del equipo a eliminar.');
+          return;
+        }
+      
+        const equipo = equipos.find(equipo => equipo.NumeroSerie === numeroSerie);
+      
+        if (!equipo) {
+          Alert.alert('Error', 'No se encontró ningún equipo con ese número de serie.');
+          return;
+        }
+      
+        Alert.alert(
+          'Confirmación',
+          `¿Está seguro de eliminar el equipo con número de serie "${numeroSerie}"?`,
+          [
+            { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
+            {
+              text: 'Eliminar',
+              onPress: () => {
+                db.transaction(tx => {
+                  tx.executeSql(
+                    'DELETE FROM Equipos WHERE NumeroSerie = ?',
+                    [numeroSerie],
+                    (tx, res) => {
+                      console.log('Equipo eliminado:', numeroSerie);
+                      // Actualiza la lista de equipos
+                      setEquipos(equipos.filter(equipo => equipo.NumeroSerie !== numeroSerie));
+                      setNumeroSerieEliminar(''); // Limpia el campo de texto después de la eliminación exitosa
+                    },
+                    (error) => {
+                      console.error('Error al eliminar el equipo:', error);
+                    }
+                  );
+                });
+              },
+              style: 'destructive',
+            },
+          ]
+        );
+      };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return(
 
@@ -76,12 +125,28 @@ if (!equipos) {
                             <Text>Marca: {equipos.Marca}</Text>
                             <Text>Modelo: {equipos.Modelo}</Text>
                             <Text>Número de Serie: {equipos.NumeroSerie}</Text>
+
                           </View>
                         ))}
 
                     <View style={{ height: 30 }} />
 
+                    <TextInput
+                      style={{ borderWidth: 1, borderColor: '#dcdcdc', textAlign:'center', padding: 10, width: 200, marginLeft: 25 }}
+                      placeholder="Número de serie del equipo a eliminar"
+                      onChangeText={setNumeroSerieEliminar}
+                    />
+
+                      <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 25, marginLeft: 70}}
+                      onPress={handleDeleteBySerialNumber}
+                      >
+                        <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign:'center', top:10}}>Eliminar</Text>
+                      </TouchableOpacity>
+
                 </ScrollView>
+
+                
+
             </View>
 
 

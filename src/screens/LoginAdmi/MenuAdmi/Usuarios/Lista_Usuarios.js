@@ -1,42 +1,91 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {  useFonts, Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LogosInstitucion from '../../../../../LogosInstitucion';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('app_db.db');
 
 
 const Lista_Usuarios = ({navigation}) =>{
 
-  const fetchUsers = async () => {
-    const response = await fetch('https://6567fd979927836bd973f99a.mockapi.io/api/v1/users', {
-      method: 'GET',
-      headers: {'content-type': 'application/json'},
+  const [usuarios, setUsuarios] = useState([]);
+  const [numeroMatriculaEliminar, setNumeroMatriculaEliminar] = useState(''); // Estado para almacenar el número de serie a eliminar
+
+  useEffect(() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM formulario',
+        [],
+        (tx, res) => {
+          const usuarios = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            usuarios.push(res.rows._array[i]);
+          }
+          setUsuarios(usuarios);
+        },
+        (error) => {
+          console.error('Error al cargar los usuarios:', error);
+        }
+      );
     });
-  
-    if (!response.ok) {
-      throw new Error('Error fetching users');
-    }
-  
-    const users = await response.json();
-    return users;
-  };
+  }, []);
 
-  const [users, setUsers] = useState([]);
-
-useEffect(() => {
-  const fetchUsersData = async () => {
-    const usersData = await fetchUsers();
-    setUsers(usersData);
-  };
-
-  fetchUsersData();
-}, []);
-
-if (!users) {
+if (!usuarios) {
   return <div>Loading...</div>;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const handleDeleteBySerialNumber = () => {
+  const numeroMatricula = numeroMatriculaEliminar.trim(); // Trim leading/trailing spaces
+
+  if (!numeroMatricula) {
+    Alert.alert('Error', 'Ingrese el número de serie del equipo a eliminar.');
+    return;
+  }
+
+  const usuario = usuarios.find(usuarios => usuarios.NumeroMatricula === numeroMatricula);
+
+  if (!usuario) {
+    Alert.alert('Error', 'No se encontró ningún equipo con ese número de serie.');
+    return;
+  }
+
+  Alert.alert(
+    'Confirmación',
+    `¿Está seguro de eliminar el usuario con el número matrículo "${numeroMatricula}"?`,
+    [
+      { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
+      {
+        text: 'Eliminar',
+        onPress: () => {
+          db.transaction(tx => {
+            tx.executeSql(
+              'DELETE FROM formulario WHERE NumeroMatricula = ?',
+              [numeroMatricula],
+              (tx, res) => {
+                console.log('Usuario eliminado:', numeroMatricula);
+                // Actualiza la lista de equipos
+                setUsuarios(usuarios.filter(usuarios => usuarios.NumeroMatricula !== numeroMatricula));
+                setNumeroMatriculaEliminar(''); // Limpia el campo de texto después de la eliminación exitosa
+              },
+              (error) => {
+                console.error('Error al eliminar el usuario:', error);
+              }
+            );
+          });
+        },
+        style: 'destructive',
+      },
+    ]
+  );
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     let [fontsLoaded] = useFonts({
@@ -68,19 +117,33 @@ if (!users) {
                     </View>
                 <ScrollView>
                   
-                  {users.map((user) => (
-                    <View key={user.id} style={{ borderBottomWidth: 1.5, borderColor: '#dcdcdc', marginTop: 10, marginLeft: 15, marginRight: 15  }}>
-                      <Text>Nombre: {user.Nombre}</Text>
-                      <Text>Apellido Paterno: {user.ApellidoPaterno}</Text>
-                      <Text>Apellido Materno: {user.ApellidoMaterno}</Text>
-                      <Text>Número de Matricula: {user.NumeroMatricula}</Text>
-                      <Text>Área: {user.Area}</Text>
-                      <Text>Usuario: {user.Usuario}</Text>
-                      <Text>Clave De Acceso: {user.ClaveDeAcceso}</Text>
+                  {usuarios.map((usuarios) => (
+                    <View key={usuarios.id} style={{ borderBottomWidth: 1.5, borderColor: '#dcdcdc', marginTop: 10, marginLeft: 15, marginRight: 15  }}>
+                      <Text>Nombre: {usuarios.Nombre}</Text>
+                      <Text>Apellido Paterno: {usuarios.ApellidoPaterno}</Text>
+                      <Text>Apellido Materno: {usuarios.ApellidoMaterno}</Text>
+                      <Text>Número de Matricula: {usuarios.NumeroMatricula}</Text>
+                      <Text>Área: {usuarios.Area}</Text>
+                      <Text>Usuario: {usuarios.Usuario}</Text>
+                      <Text>Clave De Acceso: {usuarios.ClaveDeAcceso}</Text>
                     </View>
                   ))}
 
                     <View style={{ height: 30 }} />
+
+
+                    <TextInput
+                      style={{ borderWidth: 1, borderColor: '#dcdcdc', textAlign:'center', padding: 10, width: 200, marginLeft: 25 }}
+                      placeholder="Matrícula de usuario a eliminar"
+                      onChangeText={setNumeroMatriculaEliminar}
+                    />
+
+                      <TouchableOpacity style={{backgroundColor: '#1B396A', width:100, height: 50, padding: 5, borderRadius: 30, marginTop: 25, marginLeft: 70}}
+                      onPress={handleDeleteBySerialNumber}
+                      >
+                        <Text style={{ color: 'white', fontFamily: 'Montserrat_600SemiBold', fontSize: 12, textAlign:'center', top:10}}>Eliminar</Text>
+                      </TouchableOpacity>
+
 
                 </ScrollView>
             </View>

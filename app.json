@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.americaparra01.appcontroldeprestamodeequipomultimedia"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "64b0932e-15bd-4d5c-8dd9-530beb3bd728"
+      }
     }
   }
 }
